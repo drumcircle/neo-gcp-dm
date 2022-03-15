@@ -26,6 +26,7 @@ gpgcheck=1" > /etc/yum.repos.d/neo4j.repo
 
 echo Installing Graph Database...
 export NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+# Enterprise installs Bloom and GDS
 yum -y install neo4j-enterprise-${graphDatabaseVersion}
 
 ### This doesn't quite work.  There are actually two keys, one for GDS and one for bloom
@@ -33,23 +34,16 @@ yum -y install neo4j-enterprise-${graphDatabaseVersion}
 #mkdir /etc/neo4j/license
 #echo $licenseKey > /etc/neo4j/license/neo4j.license
 
+# Add this line to neo4j.conf
+# gds.enterprise.license_file=/path/to/my/license/keyfile
+
+
 echo Configuring network in neo4j.conf...
 
 sed -i 's/#dbms.default_listen_address=0.0.0.0/dbms.default_listen_address=0.0.0.0/g' /etc/neo4j/neo4j.conf
-nodeIndex=`curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute?api-version=2017-03-01" \
-  | jq ".name" \
-  | sed 's/.*_//' \
-  | sed 's/"//'`
 
-# GCP doesn't have public DNS.  So, we're going to have to use the private IP.
-# This means clusters will not be routable from outside the GCP network.
-# Single nodes are ok.
-# It would be good to see if there's a better solution here.
-
-nodePrivateIP=`curl -s http://metadata/computeMetadata/v1beta1/instance/hostname`
-echo nodePrivateIP: ${nodePrivateIP}
-
-sed -i s/#dbms.default_advertised_address=localhost/dbms.default_advertised_address=${nodePrivateIP}/g /etc/neo4j/neo4j.conf
+# bind to external IP address
+sed -i s/#dbms.default_advertised_address=localhost/dbms.default_advertised_address=${nodeExternalIp}/g /etc/neo4j/neo4j.conf
 
 if [[ $nodeCount == 1 ]]; then
   echo Running on a single node.

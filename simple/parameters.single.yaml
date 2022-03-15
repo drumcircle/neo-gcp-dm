@@ -11,6 +11,7 @@ resources:
     adminPassword: foo123
     nodeType: n1-standard-4
     nodeCount: 1
+    nodeExternalIp: 35.211.95.133
     diskSize: 20
     graphDatabaseVersion: 4.4.4
     graphDataScienceVersion: 1.8.0

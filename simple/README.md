@@ -22,13 +22,16 @@ Now, you'll need a copy of this repo.  To make a local copy, run the commands:
 
 ## Creating a Deployment
 
-This repo contains different parameters files.  You can deploy with any of them using [deploy.sh](deploy.sh).  For example, to deploy the simple configuration run the command:
+This repo contains different parameters files.  You can deploy with any of them using [deploy.sh](deploy.sh).  
+For example, to deploy the simple configuration run the command:
 
-    ./deploy.sh simple <some deployment name>
+   #  ./deploy.sh simple <some deployment name>
+    ./deploy.sh single-test-deployment single
 
 The script then passes the cluster configuration to GCP and builds your cluster automatically.
 
-To access the cluster, open the [Google Cloud Console](http://cloud.google.com/console), navigate to Compute Engine and pick a node.  You can access the Neo4j Browser on port 7474 of the public IP of that node.
+To access the cluster, open the [Google Cloud Console](http://cloud.google.com/console), navigate to Compute Engine and pick a node.  
+You can access the Neo4j Browser on port 7474 of the public IP of that node.
 
 ## Deleting a Deployment
 

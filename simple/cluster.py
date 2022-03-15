@@ -15,6 +15,7 @@ def GenerateConfig(context):
                     'network': URL_BASE + context.env['project'] + '/global/networks/default',
                     'accessConfigs': [{
                         'name': 'External NAT',
+                        'natIP': context.properties['nodeExternalIp'],
                         'type': 'ONE_TO_ONE_NAT'
                     }]
                 }],
@@ -63,9 +64,10 @@ def GenerateConfig(context):
 
 def GenerateStartupScript(context):
     script = '#!/usr/bin/env bash\n\n'
- 
+
     script += 'adminPassword="' + context.properties['adminPassword'] + '"\n'
     script += 'nodeCount="' + str(context.properties['nodeCount']) + '"\n'
+    script += 'nodeExternalIp="' + context.properties['nodeExternalIp'] + '"\n'
     script += 'graphDatabaseVersion="' + context.properties['graphDatabaseVersion'] + '"\n'
     script += 'graphDataScienceVersion="' + context.properties['graphDataScienceVersion'] + '"\n'
     script += 'graphDataScienceLicenseKey="' + context.properties['graphDataScienceLicenseKey'] + '"\n'
